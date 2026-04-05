@@ -29,58 +29,10 @@
         }
     </script>
 
-    <style>
-        body { 
-            font-family: 'Cairo', sans-serif; 
-            background-color: #060b18;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Driver-specific background theme */
-        .driver-auth-bg {
-            background-image: linear-gradient(to bottom, rgba(6, 11, 24, 0.85), rgba(6, 11, 24, 0.7)), 
-                              url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=2070');
-            background-size: cover;
-            background-position: center;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            width: 100%;
-            max-width: 480px;
-            padding: 3rem;
-            animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-group:focus-within {
-            border-color: #10b981;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-        }
-
-        /* منع ظهور أسهم الزيادة والنقصان في حقل الرقم */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
-<body class="antialiased">
+<body class="driver-login-page antialiased">
 
 
 
@@ -101,25 +53,24 @@
                         <span class="text-2xl font-black text-blue-600">راحل</span>
                     </div>
 
-                    <!-- روابط التنقل -->
                     <div class="hidden md:flex space-x-reverse space-x-6">
-                        <a href="#" onclick="showDefaultHero()" 
+                        <a href="index.html" onclick="showDefaultHero()" 
                            class="text-gray-700 hover:text-blue-600 font-bold px-3 py-2 transition border-b-2 border-transparent hover:border-blue-600">
                             الرئيسية
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('train')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('train')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             القطارات
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('bus')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('bus')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             أتوبيسات
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('car')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('car')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             سيارات ملاكي
                         </a>
-                        <a href="driver-login.html" 
+                        <a href="driver-register.html" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             انضم كسائق
                         </a>
@@ -338,54 +289,6 @@
 
 
 
-    <script>
-      
-    // تشغيل الأيقونات بعد تحميل الصفحة
-    window.addEventListener("DOMContentLoaded", function () {
-        if (typeof lucide !== "undefined") {
-            lucide.createIcons();
-        }
-    });
 
-    // إظهار / إخفاء الباسورد
-    function togglePass() {
-        const field = document.getElementById('driverPass');
-        const icon = document.getElementById('eyeIcon');
-
-        if (field.type === 'password') {
-            field.type = 'text';
-            icon.setAttribute('data-lucide', 'eye-off');
-        } else {
-            field.type = 'password';
-            icon.setAttribute('data-lucide', 'eye');
-        }
-
-        if (typeof lucide !== "undefined") {
-            lucide.createIcons();
-        }
-    }
-
-    // التعامل مع الفورم
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById('driverLoginForm');
-
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const btn = document.getElementById('loginBtn');
-
-            // تعطيل الزر وتغيير شكله
-            btn.disabled = true;
-            btn.innerHTML = 'جاري التحميل...';
-
-            // محاكاة تحميل
-            setTimeout(() => {
-                // تحويل لصفحة لوحة التحكم
-                window.location.href = "driver-dashboard.html";
-            }, 1500);
-        });
-    });
-
-    </script>
 </body>
 </html>

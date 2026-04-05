@@ -6,32 +6,10 @@
     <title>انضم لفريق راحل - تسجيل كابتن جديد</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f4f7fe; }
-        .form-card { box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-        .input-style { 
-            padding: 1rem; 
-            background-color: #f9fafb; 
-            border: 1px solid #e5e7eb; 
-            border-radius: 1rem; 
-            outline: none; 
-            transition: all 0.3s;
-            width: 100%;
-        }
-        .input-style:focus { border-color: #2563eb; background-color: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
-        
-        .section-number {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-weight: 900;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
-<body class="min-h-screen pb-20">
+<body class="driver-register-page min-h-screen pb-20">
 
     <!-- Header -->
    
@@ -50,25 +28,24 @@
                         <span class="text-2xl font-black text-blue-600">راحل</span>
                     </div>
 
-                    <!-- روابط التنقل -->
                     <div class="hidden md:flex space-x-reverse space-x-6">
-                        <a href="#" onclick="showDefaultHero()" 
+                        <a href="index.html" onclick="showDefaultHero()" 
                            class="text-gray-700 hover:text-blue-600 font-bold px-3 py-2 transition border-b-2 border-transparent hover:border-blue-600">
                             الرئيسية
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('train')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('train')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             القطارات
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('bus')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('bus')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             أتوبيسات
                         </a>
-                        <a href="#booking-section" onclick="updateSearchFields('car')" 
+                        <a href="index.html#booking-section" onclick="updateSearchFields('car')" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             سيارات ملاكي
                         </a>
-                        <a href="driver-login.html" 
+                        <a href="driver-register.html" 
                            class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
                             انضم كسائق
                         </a>
@@ -295,19 +272,6 @@
 
 
 
-    <script>
-        document.getElementById('driverForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showModal();
-        });
 
-        function showModal() { 
-            document.getElementById('modal').classList.remove('hidden'); 
-        }
-
-        function hideModal() { 
-            document.getElementById('modal').classList.add('hidden'); 
-        }
-    </script>
 </body>
 </html>
