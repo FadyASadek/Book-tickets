@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راحل - المنصة الموحدة للنقل والمواصلات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+          <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .hero-gradient-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .active-tab {
+            border-color: #3b82f6 !important;
+            background-color: #eff6ff !important;
+            transform: scale(1.02);
+        }
+
+        .search-appear {
+            animation: slideDown 0.5s ease-out forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group-custom {
+            background: #f9fafb;
+            border: 2px solid #f1f5f9;
+            border-radius: 1.25rem;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .input-group-custom:focus-within {
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stepper-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .stepper-btn:active { transform: scale(0.9); }
+
+        .uber-path-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            height: 80%;
+        }
+        .dot-start { width: 12px; height: 12px; border-radius: 50%; background: #3b82f6; border: 2px solid white; box-shadow: 0 0 0 2px #3b82f6; }
+        .dot-end { width: 12px; height: 12px; background: #22c55e; transform: rotate(45deg); }
+        .line-dashed { width: 2px; flex-grow: 1; background-image: linear-gradient(#cbd5e1 50%, rgba(255,255,255,0) 0%); background-position: right; background-size: 2px 10px; background-repeat: repeat-y; margin: 5px 0; }
+        
+        select {
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+<script src="index.js" defer></script>
+<body>
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- القسم الأيمن: الشعار والقائمة -->
+                <div class="flex items-center space-x-reverse space-x-8">
+                    <!-- الشعار -->
+                    <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showDefaultHero()">
+                        <div class="bg-blue-600 p-1 rounded-lg">
+                            <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">راحل</span>
+                    </div>
+
+                    <!-- روابط التنقل -->
+                    <div class="hidden md:flex space-x-reverse space-x-6">
+                        <a href="#" onclick="showDefaultHero()" 
+                           class="text-gray-700 hover:text-blue-600 font-bold px-3 py-2 transition border-b-2 border-transparent hover:border-blue-600">
+                            الرئيسية
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('train')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            القطارات
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('bus')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            أتوبيسات
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('car')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            سيارات ملاكي
+                        </a>
+                        <a href="driver-login.html" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            انضم كسائق
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+                
+
+                <!-- القسم الأيسر: أزرار تسجيل الدخول الموحدة -->
+                <div class="hidden md:flex items-center space-x-reverse space-x-4">
+                    
+                    <!-- زر تسجيل دخول: أصبح الآن خلفية زرقاء مثل زر الإنشاء -->
+                    <a href="login.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        تسجيل دخول
+                    </a>
+
+                    <!-- زر إنشاء حساب: مطابق تماماً -->
+                    <a href="Create an account.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        إنشاء حساب
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    
+<div id="booking-section">
+    <!-- الفورم أو الحجز -->
+</div>
+</body>
+
+
+    <header class="relative text-white py-24 md:py-32 px-4 transition-all duration-500" id="booking-section">
+        <div class="absolute inset-0 z-0">
+            <img src="images.jfif" class="w-full h-full object-cover" alt="Background">
+            <div class="absolute inset-0 hero-gradient-overlay"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">احجز رحلتك لأي مكان في مصر</h1>
+            <p id="hero-desc" class="text-lg md:text-xl opacity-90 mb-12 font-medium max-w-2xl mx-auto">
+                بنجمعلك كل طرق المواصلات في شاشة واحدة.. قارن واحجز في ثواني بضمان وأمان
+            </p>
+            
+            <div id="search-form-container" class="hidden search-appear bg-white p-6 md:p-10 rounded-[3rem] shadow-2xl text-gray-800 border border-white/20 text-right max-w-5xl mx-auto">
+                <div class="mb-8 flex justify-start">
+                    <span id="current-mode-label" class="bg-blue-50 text-blue-700 px-6 py-2 rounded-full text-sm font-black flex items-center gap-2"></span>
+                </div>
+                <div id="dynamic-form-content"></div>
+            </div>
+
+            <div id="start-button-container" class="block mt-10">
+                <a href="#categories-anchor" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-xl inline-block">
+                    ابدأ رحلتك الآن
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="categories-anchor"></div>
+
+    <section class="max-w-7xl mx-auto py-20 px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-black text-gray-800 mb-4">اختر وسيلة المواصلات</h2>
+            <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div onclick="updateSearchFields('train')" id="card-train" class="bg-white p-10 rounded-[3rem] shadow-sm text-center card-hover border-b-8 border-blue-600">
+                <div class="w-24 h-24 bg-blue-50 rounded-3xl flex items-center justify-center mx-auto mb-8"><i class="fas fa-train text-4xl text-blue-600"></i></div>
+                <h3 class="text-2xl font-black mb-4">القطارات</h3>
+                <p class="text-gray-500 mb-8 font-medium">مواعيد قطارات السكة الحديد (مكيفة، روسي، تالجو)</p>
+                <span class="text-blue-600 font-black">احجز مقعدك<i class="fas fa-arrow-left text-xs"></i></span>
+            </div>
+
+            <div onclick="updateSearchFields('bus')" id="card-bus" class="bg-white p-10 rounded-[3rem] shadow-sm text-center card-hover border-b-8 border-emerald-500">
+                <div class="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8"><i class="fas fa-bus text-4xl text-emerald-500"></i></div>
+                <h3 class="text-2xl font-black mb-4">شركات الأتوبيس</h3>
+                <p class="text-gray-500 mb-8 font-medium">جوباص، بلو باص، وسوبر جيت في مكان واحد</p>
+                <span class="text-emerald-500 font-black">استعرض الشركات<i class="fas fa-arrow-left text-xs"></i></span>
+            </div>
+
+            <div onclick="updateSearchFields('car')" id="card-car" class="bg-white p-10 rounded-[3rem] shadow-sm text-center card-hover border-b-8 border-red-500">
+                <div class="w-24 h-24 bg-red-50 rounded-3xl flex items-center justify-center mx-auto mb-8"><i class="fas fa-car text-4xl text-red-500"></i></div>
+                <h3 class="text-2xl font-black mb-4">سيارات خاصة</h3>
+                <p class="text-gray-500 mb-8 font-medium">سافر مع أصحاب العربيات الملاكي بأمان ووفر تكاليفك</p>
+                <span class="text-red-500 font-black">اطلب رحلتك><i class="fas fa-arrow-left text-xs"></i></span>
+            </div>
+        </div>
+    </section>
+
+   <!-- Info Section (Based on requested image part) -->
+    <section class="max-w-5xl mx-auto px-4 mb-20">
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+            
+            <!-- Call to Action Side (Blue) -->
+            <div class="bg-blue-600 text-white p-8 md:w-1/3 flex flex-col justify-center items-center text-center">
+                <h3 class="text-2xl font-bold mb-4">هل أنت سائق؟</h3>
+                <p class="text-sm opacity-90 mb-6 leading-relaxed">سجل بياناتك، ارفع صورة البطاقة والرخصة وابدأ في استقبال طلبات الحجز وزود دخلك مع "راحل".</p>
+<a href="driver-login.html" 
+   class="bg-white text-blue-600 px-8 py-2 rounded-xl font-bold hover:bg-gray-100 transition inline-block">
+    سجل بياناتك الآن
+</a>            </div>
+
+            <!-- Features Side -->
+            <div class="p-8 md:w-2/3 flex flex-col justify-center bg-white">
+                <h3 class="text-2xl font-bold mb-6 text-right">ليه تحجز مع "راحل"؟</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3 justify-start flex-row-reverse">
+                        <span class="text-right">تأمين كامل على بيانات السائقين والركاب</span>
+                        <span class="bg-green-100 text-green-600 p-1 rounded-full text-xs">✓</span>
+                    </li>
+                    <li class="flex items-center gap-3 justify-start flex-row-reverse">
+                        <span class="text-right">دفع كاش أو إلكتروني (فوري، محفظة إلكترونية)</span>
+                        <span class="bg-green-100 text-green-600 p-1 rounded-full text-xs">✓</span>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+<!-- Footer احترافي معدل -->
+<footer class="bg-gradient-to-b from-[#0f172a] to-[#020617] text-white pt-16 pb-8 px-6">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+            <!-- اللوجو -->
+            <div>
+                <div class="flex items-center gap-3 mb-4 cursor-pointer">
+
+                    <!-- لوجو -->
+                    <div class="bg-blue-600 p-2 rounded-xl shadow-lg flex items-center justify-center">
+    <img src="logo.png" alt="logo" class="w-6 h-6 object-contain">
+</div>
+
+                    <!-- اسم -->
+                    <span class="text-2xl font-black tracking-wide">راحل</span>
+                </div>
+
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    المنصة الأولى في مصر التي تجمع كافة وسائل النقل في مكان واحد لتسهيل تجربة سفرك بضمان وأمان.
+                </p>
+            </div>
+
+            <!-- روابط -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">روابط سريعة</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">عن راحل</a></li>
+                    <li><a href="#" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="hover:text-white transition">سياسة الخصوصية</a></li>
+                    <li><a href="#" class="hover:text-white transition">شروط الاستخدام</a></li>
+                </ul>
+            </div>
+
+            <!-- خدمات -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">خدماتنا</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">حجز القطارات</a></li>
+                    <li><a href="#" class="hover:text-white transition">حجز الأتوبيسات</a></li>
+                    <li><a href="#" class="hover:text-white transition">السيارات الملاكي</a></li>
+                    <li><a href="#" class="hover:text-white transition">شحن الطرود</a></li>
+                </ul>
+            </div>
+
+            <!-- تواصل -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">تواصل معنا</h4>
+
+                <!-- أيقونات -->
+                <div class="flex gap-3 mb-4">
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-green-500 transition">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-400 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+
+                <p class="text-gray-400 text-sm">📧 contact@rahal.com</p>
+                <p class="text-gray-400 text-sm">📞 19000</p>
+            </div>
+
+        </div>
+
+        <!-- الحقوق -->
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
+            © 2026 جميع الحقوق محفوظة لمنصة راحل
+        </div>
+
+    </div>
+</footer>
+
+    <script>
+        // قائمة المدن المصرية الموسعة
+        const citiesHTML = `
+            <option value="" disabled selected>اختر مدينة...</option>
+            <optgroup label="المدن الرئيسية">
+                <option value="cairo">القاهرة</option>
+                <option value="giza">الجيزة</option>
+                <option value="alex">الإسكندرية</option>
+            </optgroup>
+            <optgroup label="مدن القناة وسيناء">
+                <option value="portsaid">بورسعيد</option>
+                <option value="ismailia">الإسماعيلية</option>
+                <option value="suez">السويس</option>
+                <option value="sharm">شرم الشيخ</option>
+                <option value="dahab">دهب</option>
+                <option value="tur">الطور</option>
+            </optgroup>
+            <optgroup label="البحر الأحمر">
+                <option value="hurghada">الغردقة</option>
+                <option value="gouna">الجونة</option>
+                <option value="safaga">سفاجا</option>
+                <option value="quseir">القصير</option>
+                <option value="marsa_alam">مرسى علم</option>
+            </optgroup>
+            <optgroup label="الوجه البحري والدلتا">
+                <option value="tanta">طنطا</option>
+                <option value="mansoura">المنصورة</option>
+                <option value="zagazig">الزقازيق</option>
+                <option value="damanhour">دمنهور</option>
+                <option value="banha">بنها</option>
+                <option value="kafr_el_sheikh">كفر الشيخ</option>
+                <option value="damietta">دمياط</option>
+                <option value="monufia">المنوفية (شبين الكوم)</option>
+            </optgroup>
+            <optgroup label="الصعيد">
+                <option value="fayoum">الفيوم</option>
+                <option value="beni_suef">بني سويف</option>
+                <option value="minya">المنيا</option>
+                <option value="asyut">أسيوط</option>
+                <option value="sohag">سوهاج</option>
+                <option value="qena">قنا</option>
+                <option value="luxor">الأقصر</option>
+                <option value="aswan">أسوان</option>
+            </optgroup>
+            <optgroup label="الساحل الشمالي">
+                <option value="matrouh">مرسى مطروح</option>
+                <option value="alamein">العلمين</option>
+            </optgroup>
+        `;
+
+        // قائمة المحطات للقطارات
+        const stationsHTML = `
+            <option value="" disabled selected>اختر المحطة...</option>
+            <optgroup label="القاهرة الكبرى">
+                <option value="ramses">محطة مصر (رمسيس)</option>
+                <option value="giza">محطة الجيزة</option>
+            </optgroup>
+            <optgroup label="الإسكندرية">
+                <option value="alex_misr">محطة مصر (الإسكندرية)</option>
+                <option value="sidi_gaber">محطة سيدي جابر</option>
+            </optgroup>
+            <optgroup label="باقي المحافظات">
+                <option value="tanta">محطة طنطا</option>
+                <option value="mansoura">محطة المنصورة</option>
+                <option value="asyut">محطة أسيوط</option>
+                <option value="luxor">محطة الأقصر</option>
+                <option value="aswan">محطة أسوان</option>
+            </optgroup>
+        `;
+
+        const searchContainer = document.getElementById('search-form-container');
+        const dynamicForm = document.getElementById('dynamic-form-content');
+        const startBtn = document.getElementById('start-button-container');
+        const modeLabel = document.getElementById('current-mode-label');
+
+        function showDefaultHero() {
+            searchContainer.classList.add('hidden');
+            startBtn.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateSearchFields(mode) {
+            startBtn.classList.add('hidden');
+            searchContainer.classList.remove('hidden');
+            document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+
+            document.querySelectorAll('.card-hover').forEach(card => card.classList.remove('active-tab'));
+            const selectedCard = document.getElementById(`card-${mode}`);
+            if (selectedCard) selectedCard.classList.add('active-tab');
+
+            const today = new Date().toISOString().split('T')[0];
+
+            if (mode === 'car') {
+                modeLabel.className = "bg-red-50 text-red-700 px-6 py-2 rounded-full text-sm font-black flex items-center gap-2";
+                modeLabel.innerHTML = `<i class="fas fa-car"></i> طلب رحلة خاصة (ملاكي)`;
+
+                dynamicForm.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch text-right">
+                        <div class="md:col-span-1 hidden md:flex justify-center">
+                            <div class="uber-path-visual">
+                                <div class="dot-start"></div>
+                                <div class="line-dashed"></div>
+                                <div class="dot-end"></div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-8 space-y-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-black text-gray-400 mr-2">نقطة الانطلاق</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-location-dot text-blue-500"></i>
+                                    <input placeholder="أين أنت الآن؟" class="w-full bg-transparent font-bold outline-none text-lg">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-black text-gray-400 mr-2">وجهة الوصول</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-map-pin text-red-500"></i>
+                                    <input placeholder="إلى أين تريد الذهاب؟" class="w-full bg-transparent font-bold outline-none text-lg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-3 flex flex-col justify-between gap-4">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-black text-gray-400 mr-2">تاريخ السفر</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-calendar-day text-orange-500"></i>
+                                    <input type="date" min="${today}" value="${today}" class="w-full bg-transparent font-bold outline-none cursor-pointer">
+                                </div>
+                            </div>
+                            <button class="w-full bg-black hover:bg-gray-800 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                                اطلب الآن <i class="fas fa-bolt text-yellow-400"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            } else if (mode === 'bus') {
+                modeLabel.className = "bg-emerald-50 text-emerald-700 px-6 py-2 rounded-full text-sm font-black flex items-center gap-2";
+                modeLabel.innerHTML = `<i class="fas fa-bus"></i> تخصيص المسار والمحطات (أتوبيسات)`;
+
+                dynamicForm.innerHTML = `
+                    <div class="space-y-8 text-right">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">من مدينة</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-city text-emerald-500"></i>
+                                    <select id="fromCity" class="w-full bg-transparent font-bold outline-none text-gray-700">
+                                        ${citiesHTML}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">من محطة (تحديد دقيق)</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-location-dot text-emerald-400"></i>
+                                    <input type="text" id="fromStation" placeholder="مثلاً: موقف الغردقة الجديد" class="w-full bg-transparent font-bold outline-none">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">إلى مدينة</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-city text-blue-500"></i>
+                                    <select id="toCity" class="w-full bg-transparent font-bold outline-none text-gray-700">
+                                        ${citiesHTML}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">إلى محطة (تحديد دقيق)</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-location-dot text-blue-400"></i>
+                                    <input type="text" id="toStation" placeholder="مثلاً: موقف عبود" class="w-full bg-transparent font-bold outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">تاريخ السفر</label>
+                                <div class="input-group-custom justify-between">
+                                    <i class="fa-solid fa-calendar-days text-gray-800"></i>
+                                    <input type="date" id="travelDate" min="${today}" value="${today}" class="w-full bg-transparent font-bold outline-none cursor-pointer">
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 text-center">
+                                <label class="text-xs font-black text-gray-400">عدد التذاكر</label>
+                                <div class="flex items-center justify-between bg-gray-50 border-2 border-gray-100 rounded-2xl p-2 px-4">
+                                    <button type="button" onclick="let s = this.parentNode.querySelector('#ticketCountDisp'); s.innerText = parseInt(s.innerText)+1" class="stepper-btn bg-emerald-500 text-white">+</button>
+                                    <span id="ticketCountDisp" class="font-black text-xl">1</span>
+                                    <button type="button" onclick="let s = this.parentNode.querySelector('#ticketCountDisp'); if(parseInt(s.innerText)>1) s.innerText = parseInt(s.innerText)-1" class="stepper-btn bg-emerald-100 text-emerald-600">-</button>
+                                </div>
+                            </div>
+                            <button class="w-full bg-emerald-600 text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 text-lg transition-all hover:bg-emerald-700">
+                                ابحث عن أتوبيس <i class="fas fa-search text-sm"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            } else {
+                const isTrain = mode === 'train';
+                modeLabel.className = "bg-blue-50 text-blue-700 px-6 py-2 rounded-full text-sm font-black flex items-center gap-2";
+                modeLabel.innerHTML = `<i class="fas fa-train"></i> حجز قطارات`;
+
+                dynamicForm.innerHTML = `
+                    <div class="space-y-8 text-right">
+                        <div class="flex items-center gap-6 justify-center md:justify-start">
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-gray-700">
+                                <input type="radio" name="trip-type" checked class="w-5 h-5 accent-blue-600"> ذهاب فقط
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer font-bold text-gray-700">
+                                <input type="radio" name="trip-type" class="w-5 h-5 accent-blue-600"> ذهاب وعودة 
+                            </label>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">من المحطة</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-city text-gray-400"></i>
+                                    <select class="w-full bg-transparent font-bold outline-none text-gray-600">
+                                        ${stationsHTML}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">إلى المحطة</label>
+                                <div class="input-group-custom">
+                                    <i class="fas fa-location-dot text-gray-400"></i>
+                                    <select class="w-full bg-transparent font-bold outline-none text-gray-600">
+                                        ${stationsHTML}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 mr-2">تاريخ السفر</label>
+                                <div class="input-group-custom justify-between"><input type="date" min="${today}" value="${today}" class="w-full bg-transparent font-bold outline-none cursor-pointer"><i class="fas fa-calendar-alt text-gray-800"></i></div>
+                            </div>
+                            <div class="flex flex-col gap-2 text-center">
+                                <label class="text-xs font-black text-gray-400">عدد المسافرين</label>
+                                <div class="flex items-center justify-between bg-gray-50 border-2 border-gray-100 rounded-2xl p-2 px-4">
+                                    <button type="button" onclick="let s = this.parentNode.querySelector('.pass-count'); s.innerText = parseInt(s.innerText)+1" class="stepper-btn bg-blue-500 text-white">+</button>
+                                    <span class="pass-count font-black text-xl">1</span>
+                                    <button type="button" onclick="let s = this.parentNode.querySelector('.pass-count'); if(parseInt(s.innerText)>1) s.innerText = parseInt(s.innerText)-1" class="stepper-btn bg-blue-100 text-blue-600">-</button>
+                                </div>
+                            </div>
+                            <button class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 text-lg transition-all hover:bg-blue-700">
+                                أعرض الرحلات <i class="fas fa-search text-sm"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | راحِل</title>
+    
+    <!-- الاستدعاءات الخارجية - تأكد من وجود اتصال بالإنترنت -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        // إعدادات Tailwind لتخصيص الألوان والخطوط
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Cairo', 'sans-serif'] },
+                    colors: { 
+                        primary: '#1d4ed8', 
+                        accent: '#10b981', 
+                        dark: '#1f2937' 
+                    }
+                }
+            }
+        }
+    </script>
+
+   <style>
+    body { 
+        font-family: 'Cairo', sans-serif; 
+        overflow-y: auto;
+        background-color: #0f172a;
+
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* علشان الفوتر ينزل تحت */
+    footer {
+        margin-top: auto;
+    }
+
+    /* خلفية الصفحة */
+    .auth-bg {
+        background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.5)), 
+                          url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=2069');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh; /* 🔥 بدل height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    /* الكارت */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border-radius: 2.5rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        width: 100%;
+        max-width: 450px;
+        padding: 2.5rem;
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* أنيميشن */
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* input focus */
+    .input-focus:focus-within {
+        border-color: #1d4ed8;
+        box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1);
+        background-color: white;
+    }
+
+    /* checkbox */
+    .custom-checkbox:checked {
+        background-color: #1d4ed8;
+        background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    }
+</style>
+</head>
+
+
+
+
+
+
+
+<nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- القسم الأيمن: الشعار والقائمة -->
+                <div class="flex items-center space-x-reverse space-x-8">
+                    <!-- الشعار -->
+                    <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showDefaultHero()">
+                        <div class="bg-blue-600 p-1 rounded-lg">
+                            <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">راحل</span>
+                    </div>
+
+                    <!-- روابط التنقل -->
+                   <div class="hidden md:flex gap-6">
+
+    <a href="index.html" 
+       class="text-gray-700 font-bold px-3 py-2">
+        الرئيسية
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 px-3 py-2">
+        القطارات
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 px-3 py-2">
+        أتوبيسات
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 px-3 py-2">
+        سيارات ملاكي
+    </a>
+
+    <a href="driver-login.html" 
+       class="text-gray-600 px-3 py-2">
+        انضم كسائق
+    </a>
+
+</div>
+
+
+
+
+                
+
+                <!-- القسم الأيسر: أزرار تسجيل الدخول الموحدة -->
+                <div class="hidden md:flex items-center space-x-reverse space-x-4">
+                    
+                    <!-- زر تسجيل دخول: أصبح الآن خلفية زرقاء مثل زر الإنشاء -->
+                    <a href="login.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        تسجيل دخول
+                    </a>
+
+                    <!-- زر إنشاء حساب: مطابق تماماً -->
+                    <a href="Create an account.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        إنشاء حساب
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body class="antialiased">
+
+    <div class="auth-bg">
+        <div class="glass-card">
+            <!-- الشعار العلوي -->
+            <div class="text-center mb-8">
+                <a href="index.html" class="inline-flex items-center justify-center bg-primary text-white p-3.5 rounded-2xl shadow-xl mb-4 hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="navigation" class="w-7 h-7"></i>
+                </a>
+                <h1 class="text-3xl font-black text-gray-800 tracking-tight">مرحباً بك مجدداً</h1>
+                <p class="text-gray-500 mt-2 font-medium">سجل دخولك للوصول إلى رحلاتك</p>
+            </div>
+
+            <!-- نموذج البيانات -->
+            <form id="loginForm" class="space-y-5">
+                <!-- حقل البريد الإلكتروني -->
+                <div class="space-y-1.5 text-right">
+                    <label class="block text-sm font-bold text-gray-600 pr-1">البريد الإلكتروني</label>
+                    <div class="input-focus flex items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 transition-all duration-200">
+                        <i data-lucide="mail" class="w-5 h-5 text-gray-400 ml-3"></i>
+                        <input type="email" required placeholder="example@mail.com" 
+                               class="bg-transparent w-full font-semibold focus:outline-none text-gray-700 placeholder:text-gray-300 text-left" dir="ltr">
+                    </div>
+                </div>
+
+                <!-- حقل كلمة المرور مع ميزة الإظهار/الإخفاء -->
+                <div class="space-y-1.5 text-right">
+                    <label class="block text-sm font-bold text-gray-600 pr-1">كلمة المرور</label>
+                    <div class="input-focus flex items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3.5 transition-all duration-200">
+                        <i data-lucide="lock" class="w-5 h-5 text-gray-400 ml-3"></i>
+                        <input type="password" id="passwordField" required placeholder="••••••••" 
+                               class="bg-transparent w-full font-semibold focus:outline-none text-gray-700 placeholder:text-gray-300 text-left" dir="ltr">
+                        <button type="button" onclick="togglePassword()" class="text-gray-400 hover:text-primary mr-2">
+                            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- خيارات التذكر ونسيان كلمة المرور -->
+                <div class="flex items-center justify-between text-sm font-bold">
+                    <label class="flex items-center gap-2 text-gray-500 cursor-pointer group">
+                        <input type="checkbox" class="custom-checkbox w-5 h-5 rounded-lg border-gray-300 text-primary focus:ring-primary cursor-pointer appearance-none bg-gray-100 checked:bg-primary transition-all">
+                        <span class="group-hover:text-primary transition-colors">تذكرني</span>
+                    </label>
+                    <a href="#" class="text-primary hover:text-blue-700 transition-colors">نسيت كلمة المرور؟</a>
+                </div>
+
+                <!-- زر الإرسال الرئيسي -->
+                <button type="submit" id="submitBtn" class="w-full bg-primary text-white py-4 rounded-2xl font-black text-lg shadow-lg shadow-blue-900/20 hover:bg-blue-700 hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2">
+                    <span>دخول</span>
+                    <i data-lucide="log-in" class="w-5 h-5"></i>
+                </button>
+
+                <!-- فاصل الخيارات الأخرى -->
+                <div class="relative flex items-center py-2">
+                    <div class="flex-grow border-t border-gray-200"></div>
+                    <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-widest">أو</span>
+                    <div class="flex-grow border-t border-gray-200"></div>
+                </div>
+
+                <!-- أزرار الدخول السريع -->
+                <button type="button" class="w-full flex items-center justify-center py-3.5 border-2 border-gray-100 rounded-2xl hover:bg-gray-50 transition-colors gap-3 font-bold text-gray-600">
+                    <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" class="w-5 h-5" alt="Google">
+                    <span>متابعة باستخدام جوجل</span>
+                </button>
+
+                <!-- رابط إنشاء حساب جديد -->
+                <div class="text-center pt-2">
+                    <p class="text-gray-500 font-bold">ليس لديك حساب؟ 
+                        <a href="register.html" class="text-accent hover:text-emerald-600 transition-colors border-b-2 border-accent/20 hover:border-accent">سجل مجاناً</a>
+                    </p>
+                </div>
+            </form>
+
+            <!-- رابط العودة للصفحة الرئيسية -->
+            <div class="mt-8 text-center">
+                <a href="index.html" class="inline-flex items-center gap-2 text-gray-400 hover:text-primary font-bold text-sm transition-all">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    العودة إلى الصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+   <!-- Footer -->
+<!-- Footer احترافي معدل -->
+<footer class="bg-gradient-to-b from-[#0f172a] to-[#020617] text-white pt-16 pb-8 px-6">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+            <!-- اللوجو -->
+            <div>
+                <div class="flex items-center gap-3 mb-4 cursor-pointer">
+
+                    <!-- لوجو -->
+                    <div class="bg-blue-600 p-2 rounded-xl shadow-lg flex items-center justify-center">
+    <img src="logo.png" alt="logo" class="w-6 h-6 object-contain">
+</div>
+
+                    <!-- اسم -->
+                    <span class="text-2xl font-black tracking-wide">راحل</span>
+                </div>
+
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    المنصة الأولى في مصر التي تجمع كافة وسائل النقل في مكان واحد لتسهيل تجربة سفرك بضمان وأمان.
+                </p>
+            </div>
+
+            <!-- روابط -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">روابط سريعة</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">عن راحل</a></li>
+                    <li><a href="#" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="hover:text-white transition">سياسة الخصوصية</a></li>
+                    <li><a href="#" class="hover:text-white transition">شروط الاستخدام</a></li>
+                </ul>
+            </div>
+
+            <!-- خدمات -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">خدماتنا</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">حجز القطارات</a></li>
+                    <li><a href="#" class="hover:text-white transition">حجز الأتوبيسات</a></li>
+                    <li><a href="#" class="hover:text-white transition">السيارات الملاكي</a></li>
+                    <li><a href="#" class="hover:text-white transition">شحن الطرود</a></li>
+                </ul>
+            </div>
+
+            <!-- تواصل -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">تواصل معنا</h4>
+
+                <!-- أيقونات -->
+                <div class="flex gap-3 mb-4">
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-green-500 transition">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-400 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+
+                <p class="text-gray-400 text-sm">📧 contact@rahal.com</p>
+                <p class="text-gray-400 text-sm">📞 19000</p>
+            </div>
+
+        </div>
+
+        <!-- الحقوق -->
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
+            © 2024 جميع الحقوق محفوظة لمنصة راحل
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // تفعيل الأيقونات
+    lucide.createIcons();
+
+    // إظهار/إخفاء كلمة المرور
+    window.togglePassword = function() {
+        const passField = document.getElementById('passwordField');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        if (passField.type === 'password') {
+            passField.type = 'text';
+            eyeIcon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            passField.type = 'password';
+            eyeIcon.setAttribute('data-lucide', 'eye');
+        }
+
+        lucide.createIcons();
+    };
+
+    // الفورم
+    const form = document.getElementById('loginForm');
+
+    if(form){
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            console.log("login clicked");
+
+            // 🔥 حفظ تسجيل الدخول
+            localStorage.setItem("isLoggedIn", "true");
+
+            console.log("saved:", localStorage.getItem("isLoggedIn"));
+
+            alert("تم تسجيل الدخول ✅");
+
+            window.location.href = "index.html";
+        });
+    }
+
+});
+</script>
+</body>
+</html>

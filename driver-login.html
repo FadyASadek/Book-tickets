@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول السائقين | راحِل</title>
+    
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Cairo', 'sans-serif'] },
+                    colors: { 
+                        primary: '#1d4ed8', 
+                        accent: '#10b981', 
+                        dark: '#1f2937' 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #060b18;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Driver-specific background theme */
+        .driver-auth-bg {
+            background-image: linear-gradient(to bottom, rgba(6, 11, 24, 0.85), rgba(6, 11, 24, 0.7)), 
+                              url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 480px;
+            padding: 3rem;
+            animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group:focus-within {
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        /* منع ظهور أسهم الزيادة والنقصان في حقل الرقم */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+
+
+
+
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- القسم الأيمن: الشعار والقائمة -->
+                <div class="flex items-center space-x-reverse space-x-8">
+                    <!-- الشعار -->
+                    <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showDefaultHero()">
+                        <div class="bg-blue-600 p-1 rounded-lg">
+                            <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">راحل</span>
+                    </div>
+
+                    <!-- روابط التنقل -->
+                    <div class="hidden md:flex space-x-reverse space-x-6">
+                        <a href="#" onclick="showDefaultHero()" 
+                           class="text-gray-700 hover:text-blue-600 font-bold px-3 py-2 transition border-b-2 border-transparent hover:border-blue-600">
+                            الرئيسية
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('train')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            القطارات
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('bus')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            أتوبيسات
+                        </a>
+                        <a href="#booking-section" onclick="updateSearchFields('car')" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            سيارات ملاكي
+                        </a>
+                        <a href="driver-login.html" 
+                           class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+                            انضم كسائق
+                        </a>
+                    </div>
+                </div>
+
+                <!-- القسم الأيسر: أزرار تسجيل الدخول الموحدة -->
+                <div class="hidden md:flex items-center space-x-reverse space-x-4">
+                    
+                    <!-- زر تسجيل دخول: أصبح الآن خلفية زرقاء مثل زر الإنشاء -->
+                    <a href="login.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        تسجيل دخول
+                    </a>
+
+                    <!-- زر إنشاء حساب: مطابق تماماً -->
+                    <a href="Create an account.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        إنشاء حساب
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="driver-auth-bg">
+        <div class="glass-card">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center bg-accent text-white p-4 rounded-3xl shadow-xl shadow-emerald-500/20 mb-6 group transition-transform hover:rotate-3">
+                    <i data-lucide="truck" class="w-8 h-8"></i>
+                </div>
+                <h1 class="text-3xl font-black text-gray-800 tracking-tight">بوابة السائقين</h1>
+                <p class="text-gray-500 mt-2 font-medium">سجل دخولك لإدارة رحلاتك وأرباحك</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="driverLoginForm" class="space-y-5">
+                <!-- National ID / الرقم القومي -->
+                <div class="space-y-1.5 text-right">
+                    <label class="block text-sm font-bold text-gray-600 pr-1">الرقم القومي (14 رقم)</label>
+                    <div class="input-group flex items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-4 transition-all duration-200">
+                        <i data-lucide="id-card" class="w-5 h-5 text-gray-400 ml-3"></i>
+                        <input type="number" required placeholder="29901010000000" 
+                               oninput="if(this.value.length > 14) this.value = this.value.slice(0, 14);"
+                               class="bg-transparent w-full font-semibold focus:outline-none text-gray-700 text-left" dir="ltr">
+                    </div>
+                </div>
+
+                <!-- Driver Email -->
+                <div class="space-y-1.5 text-right">
+                    <label class="block text-sm font-bold text-gray-600 pr-1">البريد الإلكتروني</label>
+                    <div class="input-group flex items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-4 transition-all duration-200">
+                        <i data-lucide="mail" class="w-5 h-5 text-gray-400 ml-3"></i>
+                        <input type="email" required placeholder="driver@rahel.com" 
+                               class="bg-transparent w-full font-semibold focus:outline-none text-gray-700 text-left" dir="ltr">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="space-y-1.5 text-right">
+                    <label class="block text-sm font-bold text-gray-600 pr-1">كلمة المرور</label>
+                    <div class="input-group flex items-center bg-gray-50 border border-gray-200 rounded-2xl px-4 py-4 transition-all duration-200">
+                        <i data-lucide="key-round" class="w-5 h-5 text-gray-400 ml-3"></i>
+                        <input type="password" id="driverPass" required placeholder="••••••••" 
+                               class="bg-transparent w-full font-semibold focus:outline-none text-gray-700 text-left" dir="ltr">
+                        <button type="button" onclick="togglePass()" class="text-gray-400 hover:text-accent mr-2">
+                            <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="flex items-center justify-between text-sm font-bold pt-1">
+                    <label class="flex items-center gap-2 text-gray-500 cursor-pointer group">
+                        <input type="checkbox" class="w-5 h-5 rounded-lg border-gray-300 text-accent focus:ring-accent cursor-pointer appearance-none bg-gray-100 checked:bg-accent transition-all">
+                        <span class="group-hover:text-accent transition-colors">تذكرني</span>
+                    </label>
+                    <a href="#" class="text-accent hover:text-emerald-700 transition-colors">فقدت الوصول للحساب؟</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="loginBtn" class="w-full bg-accent text-white py-4 rounded-2xl font-black text-xl shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 hover:-translate-y-1 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3">
+    <span>دخول لوحة التحكم</span>
+    <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
+</button>
+
+                <!-- Footer Info -->
+                <div class="text-center pt-6 border-t border-gray-100">
+    <p class="text-gray-500 font-bold text-sm">
+        هل أنت سائق جديد؟ 
+        <a href="driver-register.html" class="text-primary hover:underline">
+            قدم طلب انضمام الآن
+        </a>
+    </p>
+</div>
+            </form>
+
+            <!-- Back Link -->
+            <div class="mt-8 text-center">
+                <a href="account-type.html" class="inline-flex items-center gap-2 text-gray-400 hover:text-primary font-bold text-sm transition-all">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    تغيير نوع الحساب
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+<!-- Footer احترافي معدل -->
+<footer class="bg-gradient-to-b from-[#0f172a] to-[#020617] text-white pt-16 pb-8 px-6">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+            <!-- اللوجو -->
+            <div>
+                <div class="flex items-center gap-3 mb-4 cursor-pointer">
+
+                    <!-- لوجو -->
+                    <div class="bg-blue-600 p-2 rounded-xl shadow-lg flex items-center justify-center">
+    <img src="logo.png" alt="logo" class="w-6 h-6 object-contain">
+</div>
+
+                    <!-- اسم -->
+                    <span class="text-2xl font-black tracking-wide">راحل</span>
+                </div>
+
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    المنصة الأولى في مصر التي تجمع كافة وسائل النقل في مكان واحد لتسهيل تجربة سفرك بضمان وأمان.
+                </p>
+            </div>
+
+            <!-- روابط -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">روابط سريعة</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">عن راحل</a></li>
+                    <li><a href="#" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="hover:text-white transition">سياسة الخصوصية</a></li>
+                    <li><a href="#" class="hover:text-white transition">شروط الاستخدام</a></li>
+                </ul>
+            </div>
+
+            <!-- خدمات -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">خدماتنا</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">حجز القطارات</a></li>
+                    <li><a href="#" class="hover:text-white transition">حجز الأتوبيسات</a></li>
+                    <li><a href="#" class="hover:text-white transition">السيارات الملاكي</a></li>
+                    <li><a href="#" class="hover:text-white transition">شحن الطرود</a></li>
+                </ul>
+            </div>
+
+            <!-- تواصل -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">تواصل معنا</h4>
+
+                <!-- أيقونات -->
+                <div class="flex gap-3 mb-4">
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-green-500 transition">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-400 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+
+                <p class="text-gray-400 text-sm">📧 contact@rahal.com</p>
+                <p class="text-gray-400 text-sm">📞 19000</p>
+            </div>
+
+        </div>
+
+        <!-- الحقوق -->
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
+            © 2024 جميع الحقوق محفوظة لمنصة راحل
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+      
+    // تشغيل الأيقونات بعد تحميل الصفحة
+    window.addEventListener("DOMContentLoaded", function () {
+        if (typeof lucide !== "undefined") {
+            lucide.createIcons();
+        }
+    });
+
+    // إظهار / إخفاء الباسورد
+    function togglePass() {
+        const field = document.getElementById('driverPass');
+        const icon = document.getElementById('eyeIcon');
+
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            field.type = 'password';
+            icon.setAttribute('data-lucide', 'eye');
+        }
+
+        if (typeof lucide !== "undefined") {
+            lucide.createIcons();
+        }
+    }
+
+    // التعامل مع الفورم
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById('driverLoginForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('loginBtn');
+
+            // تعطيل الزر وتغيير شكله
+            btn.disabled = true;
+            btn.innerHTML = 'جاري التحميل...';
+
+            // محاكاة تحميل
+            setTimeout(() => {
+                // تحويل لصفحة لوحة التحكم
+                window.location.href = "driver-dashboard.html";
+            }, 1500);
+        });
+    });
+
+    </script>
+</body>
+</html>

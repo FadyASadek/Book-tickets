@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - راحل</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind for Navbar -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-overlay: rgba(15, 23, 42, 0.75);
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
+                        url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=2069');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Container centering adjustment */
+        .page-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: calc(100vh - 80px); /* Subtract Navbar height */
+        }
+
+        .signup-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-box {
+            background: var(--primary-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            text-align: right;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            padding-right: 5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: white;
+        }
+
+        .input-wrapper.error {
+            border-color: var(--error-color) !important;
+        }
+
+        .input-wrapper i {
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 12px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .error-msg {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .divider {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .back-home {
+            display: block;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #msg-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 10px;
+            color: white;
+            display: none;
+            z-index: 1000;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- النافبار -->
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- القسم الأيمن: الشعار والقائمة -->
+                <div class="flex items-center space-x-reverse space-x-8">
+                    <!-- الشعار -->
+                    <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showDefaultHero()">
+                        <div class="bg-blue-600 p-1 rounded-lg">
+                            <img src="logo.png" alt="Logo" class="w-10 h-10 object-contain">
+                        </div>
+                        <span class="text-2xl font-black text-blue-600">راحل</span>
+                    </div>
+
+                 <!-- روابط التنقل -->
+<div class="hidden md:flex space-x-reverse gap-6">
+
+    <a href="index.html" 
+       class="text-gray-700 hover:text-blue-600 font-bold px-3 py-2 transition border-b-2 border-transparent hover:border-blue-600">
+        الرئيسية
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+        القطارات
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+        أتوبيسات
+    </a>
+
+    <a href="index.html#booking-section" 
+       class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+        سيارات ملاكي
+    </a>
+
+    <a href="driver-login.html" 
+       class="text-gray-600 hover:text-blue-600 font-bold px-3 py-2 transition">
+        انضم كسائق
+    </a>
+
+</div>
+
+                <!-- القسم الأيسر: أزرار تسجيل الدخول الموحدة -->
+                <div class="hidden md:flex items-center space-x-reverse space-x-4">
+                    
+                    <!-- زر تسجيل دخول: أصبح الآن خلفية زرقاء مثل زر الإنشاء -->
+                    <a href="login.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        تسجيل دخول
+                    </a>
+
+                    <!-- زر إنشاء حساب: مطابق تماماً -->
+                    <a href="Create an account.html" 
+                       class="bg-[#2563eb] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-[#1d4ed8] shadow-sm hover:shadow-lg transition-all duration-300">
+                        إنشاء حساب
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- صندوق الرسائل -->
+    <div id="msg-box"></div>
+
+    <!-- محتوى الصفحة -->
+    <div class="page-content">
+        <div class="signup-container">
+            <div class="logo-box">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+
+            <h1>إنشاء حساب جديد</h1>
+            <p class="subtitle">انضم لآلاف المسافرين وابدأ رحلتك مع "راحل"</p>
+
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <!-- الاسم -->
+                <div class="form-group">
+                    <label for="fullName">الاسم بالكامل</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="fullName" placeholder="اكتب اسمك الثلاثي" required>
+                    </div>
+                </div>
+
+                <!-- البريد الإلكتروني -->
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="email" placeholder="example@mail.com" required>
+                    </div>
+                </div>
+
+                <!-- كلمة المرور -->
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <i class="fa-solid fa-eye-slash" id="togglePass" style="cursor: pointer; margin-right: auto; margin-left: 0;"></i>
+                    </div>
+                </div>
+
+                <!-- تأكيد كلمة المرور -->
+                <div class="form-group">
+                    <label for="confirmPassword">تأكيد كلمة المرور</label>
+                    <div class="input-wrapper" id="confirmWrapper">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <input type="password" id="confirmPassword" placeholder="أعد كتابة كلمة المرور" required>
+                    </div>
+                    <div id="confirmError" class="error-msg">كلمات المرور غير متطابقة!</div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    إنشاء الحساب 
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>أو التسجيل بواسطة</span>
+            </div>
+
+            <button class="btn-google" onclick="showMessage('جاري الاتصال بـ Google...', '#4285F4')">
+                <img src="https://www.google.com/favicon.ico" width="18" alt="Google Logo">
+                متابعة باستخدام حساب جوجل
+            </button>
+
+            <p class="footer-text">
+                لديك حساب بالفعل؟ <a href="#">سجل دخولك هنا</a>
+            </p>
+
+            <a href="#" class="back-home">
+                <i class="fa-solid fa-house" style="font-size: 11px; margin-left: 5px;"></i>
+                العودة للرئيسية
+            </a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+<!-- Footer احترافي معدل -->
+<footer class="bg-gradient-to-b from-[#0f172a] to-[#020617] text-white pt-16 pb-8 px-6">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+            <!-- اللوجو -->
+            <div>
+                <div class="flex items-center gap-3 mb-4 cursor-pointer">
+
+                    <!-- لوجو -->
+                    <div class="bg-blue-600 p-2 rounded-xl shadow-lg flex items-center justify-center">
+    <img src="logo.png" alt="logo" class="w-6 h-6 object-contain">
+</div>
+
+                    <!-- اسم -->
+                    <span class="text-2xl font-black tracking-wide">راحل</span>
+                </div>
+
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    المنصة الأولى في مصر التي تجمع كافة وسائل النقل في مكان واحد لتسهيل تجربة سفرك بضمان وأمان.
+                </p>
+            </div>
+
+            <!-- روابط -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">روابط سريعة</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">عن راحل</a></li>
+                    <li><a href="#" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    <li><a href="#" class="hover:text-white transition">سياسة الخصوصية</a></li>
+                    <li><a href="#" class="hover:text-white transition">شروط الاستخدام</a></li>
+                </ul>
+            </div>
+
+            <!-- خدمات -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">خدماتنا</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">حجز القطارات</a></li>
+                    <li><a href="#" class="hover:text-white transition">حجز الأتوبيسات</a></li>
+                    <li><a href="#" class="hover:text-white transition">السيارات الملاكي</a></li>
+                    <li><a href="#" class="hover:text-white transition">شحن الطرود</a></li>
+                </ul>
+            </div>
+
+            <!-- تواصل -->
+            <div>
+                <h4 class="text-blue-400 font-bold mb-4">تواصل معنا</h4>
+
+                <!-- أيقونات -->
+                <div class="flex gap-3 mb-4">
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-green-500 transition">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 p-3 rounded-full hover:bg-blue-400 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+
+                <p class="text-gray-400 text-sm">📧 contact@rahal.com</p>
+                <p class="text-gray-400 text-sm">📞 19000</p>
+            </div>
+
+        </div>
+
+        <!-- الحقوق -->
+        <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-xs">
+            © 2024 جميع الحقوق محفوظة لمنصة راحل
+        </div>
+
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+        // تبديل رؤية كلمة المرور
+        const togglePass = document.getElementById('togglePass');
+        const passwordInput = document.getElementById('password');
+
+        togglePass.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePass.classList.toggle('fa-eye');
+            togglePass.classList.toggle('fa-eye-slash');
+        });
+
+        // معالجة النموذج والتحقق
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('fullName').value;
+            const pass = document.getElementById('password').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            const confirmWrapper = document.getElementById('confirmWrapper');
+            const confirmError = document.getElementById('confirmError');
+
+            // إعادة ضبط الأخطاء
+            confirmWrapper.classList.remove('error');
+            confirmError.style.display = 'none';
+
+            // التحقق من تطابق كلمات المرور
+            if (pass !== confirmPass) {
+                confirmWrapper.classList.add('error');
+                confirmError.style.display = 'block';
+                return false;
+            }
+
+            // النجاح
+            showMessage(`أهلاً بك يا ${name}! تم إنشاء حسابك بنجاح.`, '#10b981');
+        }
+
+        // إشعار مخصص
+        function showMessage(text, color) {
+            const box = document.getElementById('msg-box');
+            box.innerText = text;
+            box.style.backgroundColor = color;
+            box.style.display = 'block';
+            
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 4000);
+        }
+
+        // التحقق أثناء الكتابة
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const pass = document.getElementById('password').value;
+            if (this.value === pass) {
+                document.getElementById('confirmWrapper').classList.remove('error');
+                document.getElementById('confirmError').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
